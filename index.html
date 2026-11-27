@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen PG Kompleks: If Clause & Tenses - SMA</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --danger: #b91c1c;
+            --danger-bg: #fee2e2;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 16px; line-height: 1.5; }
+        .container { max-width: 920px; margin: 0 auto; }
+
+        .header-card {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white; padding: 28px; border-radius: 14px; margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+        }
+        .header-card h1 { margin: 0 0 8px 0; font-size: 1.65rem; }
+        .header-card p { margin: 0; opacity: 0.92; font-size: 0.95rem; }
+
+        .card {
+            background: var(--card); padding: 22px; border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+        label.field-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        input[type="text"], select {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+            border-radius: 8px; font-size: 1rem; outline: none;
+        }
+        input[type="text"]:focus, select:focus { border-color: var(--primary-light); }
+
+        .sticky-bar {
+            position: sticky; top: 10px; z-index: 100; background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(6px); padding: 12px 20px; border-radius: 10px;
+            border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+        .badge { background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+        .q-num { font-weight: 700; color: var(--primary); font-size: 1.05rem; }
+        .q-topic { font-size: 0.78rem; background: #eff6ff; color: #1d4ed8; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+        .q-context { font-weight: 500; margin-bottom: 14px; font-size: 0.98rem; color: #1e293b; }
+
+        table.complex-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        table.complex-table th {
+            background: #f1f5f9; color: #334155; font-size: 0.85rem; text-transform: uppercase;
+            padding: 10px; border: 1px solid #e2e8f0;
+        }
+        table.complex-table td { padding: 12px; border: 1px solid #e2e8f0; vertical-align: middle; font-size: 0.95rem; }
+        table.complex-table td.center { text-align: center; width: 95px; }
+        table.complex-table tr:hover { background: #f8fafc; }
+
+        .radio-btn { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+
+        .explanation {
+            margin-top: 14px; padding: 14px; border-radius: 8px; display: none; font-size: 0.92rem;
+        }
+        .explanation.correct { background: var(--success-bg); color: #14532d; border: 1px solid #86efac; }
+        .explanation.partial { background: #fef9c3; color: #713f12; border: 1px solid #fde047; }
+        .explanation.wrong { background: var(--danger-bg); color: #7f1d1d; border: 1px solid #fca5a5; }
+
+        .btn {
+            background: var(--primary); color: white; border: none; padding: 15px 28px;
+            font-size: 1.05rem; font-weight: 700; border-radius: 10px; cursor: pointer;
+            width: 100%; transition: background 0.2s; margin-top: 10px;
+        }
+        .btn:hover { background: #1e3a8a; }
+        .btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+        #result-box { display: none; text-align: center; border: 2px solid var(--primary); }
+        .score-circle {
+            width: 130px; height: 130px; border-radius: 50%; background: var(--primary);
+            color: white; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; margin: 0 auto 16px auto;
+        }
+        .score-circle span { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+        .score-circle small { font-size: 0.8rem; opacity: 0.9; margin-top: 4px; }
+        .status-msg { margin-top: 14px; font-weight: 600; padding: 12px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-card">
+        <h1>Asesmen PG Kompleks: If Clause & Tenses</h1>
+        <p>Mata Pelajaran Bahasa Inggris SMA • 50 Soal (150 Pernyataan Benar/Salah)<br>
+        Petunjuk: Tentukan apakah setiap pernyataan pada masing-masing nomor bernilai <strong>Benar (True)</strong> atau <strong>Salah (False)</strong>.</p>
+    </div>
+
+    <!-- Identitas Siswa -->
+    <div class="card" id="identity-card">
+        <h3 style="margin-top:0; margin-bottom:14px;">Identitas Peserta Didik</h3>
+        <div class="form-grid">
+            <div>
+                <label class="field-label" for="studentName">Nama Lengkap *</label>
+                <input type="text" id="studentName" placeholder="Masukkan nama lengkap Anda" required>
+            </div>
+            <div>
+                <label class="field-label" for="studentClass">Kelas *</label>
+                <input type="text" id="studentClass" placeholder="Contoh: XI MIPA 2 / XII IPS 1" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Progress Bar -->
+    <div class="sticky-bar">
+        <span>Soal Selesai: <strong id="completed-q">0</strong> / 50</span>
+        <span class="badge" id="timer">Waktu: 00:00</span>
+    </div>
+
+    <!-- Hasil Akhir -->
+    <div class="card" id="result-box">
+        <h2 style="margin-top:0;">Hasil Asesmen PG Kompleks</h2>
+        <div class="score-circle">
+            <span id="final-score">0</span>
+            <small>SKOR AKHIR</small>
+        </div>
+        <p id="score-detail" style="font-size: 1.05rem; font-weight: 600;"></p>
+        <div id="email-status" class="status-msg"></div>
+        <p style="color: var(--muted); font-size: 0.9rem; margin-top: 14px;">Gulir ke bawah untuk memeriksa kunci jawaban dan penjelasan detail setiap soal.</p>
+    </div>
+
+    <!-- Form Soal -->
+    <form id="quiz-form">
+        <div id="questions-container"></div>
+        <button type="submit" class="btn" id="submit-btn">Kirim Jawaban ke Guru & Lihat Pembahasan</button>
+    </form>
+</div>
+
+<script>
+    // =========================================================================
+    // KONFIGURASI EMAIL GURU: zaenahsuad37@guru.sma.belajar.id
+    // Ganti URL di bawah ini dengan Endpoint Formspree yang terhubung ke email Anda
+    // =========================================================================
+    const TEACHER_EMAIL = "zaenahsuad37@guru.sma.belajar.id";
+    const FORMSPREE_ENDPOINT = "GANTI_DENGAN_URL_FORMSPREE_ANDA";
+
+    // =========================================================================
+    // BANK SOAL: 50 SOAL PG KOMPLEKS (MATERI IF CLAUSE & TENSES)
+    // =========================================================================
+    const questions = [
+        // --- BAGIAN 1: TENSES (SOAL 1 - 25) ---
+        {
+            topic: "Simple Present & Present Continuous",
+            context: "Evaluasi ketepatan struktur kalimat dan penggunaan keterangan waktu pada pernyataan berikut:",
+            statements: [
+                { text: "The sun rises in the east and sets in the west.", correct: true },
+                { text: "Look! The students play football in the school yard right now.", correct: false },
+                { text: "Water boils at 100 degrees Celsius under standard pressure.", correct: true }
+            ],
+            explanation: "(1) Benar: Fakta umum menggunakan Simple Present. (2) Salah: Ada kata 'Look!' dan 'right now' sehingga harus Present Continuous ('are playing'). (3) Benar: Kebenaran ilmiah menggunakan Simple Present."
+        },
+        {
+            topic: "Stative Verbs in Present Continuous",
+            context: "Tentukan apakah penggunaan bentuk '-ing' pada kata kerja berikut berterima secara gramatikal:",
+            statements: [
+                { text: "I am knowing the answer to the final chemistry question.", correct: false },
+                { text: "She is currently understanding the concept of quantum physics.", correct: false },
+                { text: "They are having dinner with their grandparents at the moment.", correct: true }
+            ],
+            explanation: "(1) Salah: 'Know' adalah stative verb (tidak boleh bentuk -ing). (2) Salah: 'Understand' juga stative verb. (3) Benar: 'Have' bermakna 'makan/menikmati' adalah dynamic verb sehingga boleh menggunakan -ing."
+        },
+        {
+            topic: "Present Perfect Tense",
+            context: "Perhatikan penggunaan 'since' dan 'for' pada kalimat Present Perfect berikut:",
+            statements: [
+                { text: "My family has lived in this city since ten years.", correct: false },
+                { text: "Rina has studied English since she was in elementary school.", correct: true },
+                { text: "We have known each other for more than a decade.", correct: true }
+            ],
+            explanation: "(1) Salah: 'Ten years' adalah durasi waktu, seharusnya menggunakan 'for', bukan 'since'. (2) Benar: 'Since' diikuti titik waktu lampau. (3) Benar: 'For' diikuti durasi waktu."
+        },
+        {
+            topic: "Present Perfect vs Simple Past",
+            context: "Analisis penggunaan keterangan waktu spesifik (definite past time) dalam kalimat berikut:",
+            statements: [
+                { text: "I have visited Bali with my classmates last year.", correct: false },
+                { text: "She has already submitted her research paper to the committee.", correct: true },
+                { text: "Did you finish reading the novel I lent you yesterday?", correct: true }
+            ],
+            explanation: "(1) Salah: 'Last year' adalah waktu lampau spesifik, wajib Simple Past ('I visited'). (2) Benar: 'Already' tanpa waktu spesifik cocok untuk Present Perfect. (3) Benar: 'Yesterday' menggunakan Simple Past ('Did you finish')."
+        },
+        {
+            topic: "Present Perfect Continuous",
+            context: "Evaluasi kalimat yang menyatakan aktivitas yang dimulai di masa lalu dan masih berlangsung hingga kini:",
+            statements: [
+                { text: "He has been waiting for the bus for forty minutes.", correct: true },
+                { text: "How long have you been learning to play the violin?", correct: true },
+                { text: "They have been painted the classroom walls since morning.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola has + been + V-ing + durasi waktu. (2) Benar: Pertanyaan durasi aktivitas yang masih berjalan. (3) Salah: Struktur aktif seharusnya 'have been painting', bukan V3 ('painted')."
+        },
+        {
+            topic: "Simple Past & Irregular Verbs",
+            context: "Periksa ketepatan bentuk kata kerja lampau (Verb 2) dalam kalimat-kalimat berikut:",
+            statements: [
+                { text: "The athlete swam across the lake in record time yesterday.", correct: true },
+                { text: "She buyed a new dictionary at the bookstore two days ago.", correct: false },
+                { text: "The wind blew strongly during the storm last night.", correct: true }
+            ],
+            explanation: "(1) Benar: V2 dari 'swim' adalah 'swam'. (2) Salah: V2 dari 'buy' adalah 'bought', bukan 'buyed'. (3) Benar: V2 dari 'blow' adalah 'blew'."
+        },
+        {
+            topic: "Past Continuous & Simple Past",
+            context: "Analisis kombinasi dua kejadian di masa lampau (kejadian yang sedang berlangsung vs yang menyela):",
+            statements: [
+                { text: "While I was walking home, it suddenly started to rain.", correct: true },
+                { text: "When the teacher entered the room, the students talked loudly.", correct: false },
+                { text: "They were watching a movie when the electricity went out.", correct: true }
+            ],
+            explanation: "(1) Benar: 'While' diikuti Past Continuous ('was walking'), kejadian penyela memakai Simple Past ('started'). (2) Salah: Kejadian yang sedang berlangsung saat guru masuk seharusnya 'were talking'. (3) Benar: Past Continuous + when + Simple Past."
+        },
+        {
+            topic: "Parallel Past Continuous",
+            context: "Tentukan kebenaran kalimat yang menyatakan dua aktivitas berlangsung bersamaan di masa lampau:",
+            statements: [
+                { text: "While mother was cooking dinner, father was reading the newspaper.", correct: true },
+                { text: "At 8 PM last night, I was doing my homework while my brother played games.", correct: false },
+                { text: "The band was playing music while the guests were enjoying the food.", correct: true }
+            ],
+            explanation: "(1) Benar: Dua aktivitas simultan di masa lalu sama-sama menggunakan Past Continuous. (2) Salah: Agar paralel bersamaan, 'played' seharusnya 'was playing'. (3) Benar: Keduanya menggunakan Past Continuous."
+        },
+        {
+            topic: "Past Perfect Tense",
+            context: "Periksa urutan waktu (kejadian lebih dulu selesai vs kejadian berikutnya di masa lampau):",
+            statements: [
+                { text: "By the time we arrived at the station, the train had already left.", correct: true },
+                { text: "She realized that she left her wallet at home after she reached the office.", correct: false },
+                { text: "After he had finished his dinner, he went out for a walk.", correct: true }
+            ],
+            explanation: "(1) Benar: Kereta berangkat lebih dulu ('had left') sebelum kami tiba ('arrived'). (2) Salah: Meninggalkan dompet terjadi lebih dulu sebelum sadar, seharusnya 'had left'. (3) Benar: 'After' diikuti Past Perfect ('had finished'), lalu Simple Past ('went')."
+        },
+        {
+            topic: "Past Perfect Continuous",
+            context: "Evaluasi struktur Past Perfect Continuous untuk menekankan durasi sebelum titik waktu lampau:",
+            statements: [
+                { text: "They had been working on the project for six months before it was canceled.", correct: true },
+                { text: "Her eyes were red because she had been crying.", correct: true },
+                { text: "We had been waited for two hours when the plane finally landed.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola had + been + V-ing + durasi sebelum kejadian lampau lain. (2) Benar: Menjelaskan sebab akibat di masa lampau. (3) Salah: Setelah 'had been' harus V-ing ('waiting'), bukan V3."
+        },
+        {
+            topic: "Simple Future: Will vs Be Going To",
+            context: "Analisis perbedaan penggunaan 'will' (keputusan spontan/prediksi) dan 'be going to' (rencana/bukti):",
+            statements: [
+                { text: "Look at those dark clouds! It is going to rain soon.", correct: true },
+                { text: "'The phone is ringing.' 'Don't worry, I am going to answer it.'", correct: false },
+                { text: "We have bought the tickets; we are going to fly to Yogyakarta tomorrow.", correct: true }
+            ],
+            explanation: "(1) Benar: Ada bukti visual (awan gelap), gunakan 'is going to'. (2) Salah: Keputusan spontan saat telepon berdering menggunakan 'will' ('I will answer it'). (3) Benar: Rencana matang yang sudah dipersiapkan memakai 'are going to'."
+        },
+        {
+            topic: "Future Continuous Tense",
+            context: "Tentukan ketepatan kalimat yang menyatakan kegiatan sedang berlangsung pada waktu tertentu di masa depan:",
+            statements: [
+                { text: "This time tomorrow, we will be sitting on the beach in Lombok.", correct: true },
+                { text: "Don't call me at 9 PM tonight because I will be studying for the exam.", correct: true },
+                { text: "At 10 AM next Monday, the principal will be deliver a speech.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola will + be + V-ing dengan penanda waktu spesifik masa depan ('This time tomorrow'). (2) Benar: Kejadian sedang berlangsung pukul 9 malam nanti. (3) Salah: Setelah 'will be' harus V-ing ('delivering'), bukan V1."
+        },
+        {
+            topic: "Future Perfect Tense",
+            context: "Evaluasi kalimat yang menyatakan kegiatan akan sudah selesai sebelum batas waktu di masa depan:",
+            statements: [
+                { text: "By next year, my sister will have graduated from university.", correct: true },
+                { text: "By the time you arrive tonight, I will have finished cooking dinner.", correct: true },
+                { text: "They will have build the new bridge by the end of 2027.", correct: false }
+            ],
+            explanation: "(1) Benar: Penanda 'By next year' + will + have + V3 ('graduated'). (2) Benar: 'By the time + Simple Present' dipasangkan dengan Future Perfect. (3) Salah: V3 dari 'build' adalah 'built', bukan 'build'."
+        },
+        {
+            topic: "Future Time Clauses",
+            context: "Perhatikan aturan penggunaan tenses setelah kata sambung waktu (when, until, as soon as, before) untuk masa depan:",
+            statements: [
+                { text: "I will text you as soon as I will arrive at the airport.", correct: false },
+                { text: "We will wait here until the rain stops.", correct: true },
+                { text: "She will call us before she leaves for Jakarta.", correct: true }
+            ],
+            explanation: "(1) Salah: Dalam klausa waktu (setelah 'as soon as'), tidak boleh memakai 'will', harus Simple Present ('I arrive'). (2) Benar: Setelah 'until' menggunakan Simple Present ('stops'). (3) Benar: Setelah 'before' menggunakan Simple Present ('leaves')."
+        },
+        {
+            topic: "Subject-Verb Agreement in Tenses",
+            context: "Periksa kesesuaian subjek dan kata kerja dalam berbagai bentuk tenses berikut:",
+            statements: [
+                { text: "Neither the teacher nor the students were present yesterday.", correct: true },
+                { text: "Everyone in the classroom have submitted their assignment.", correct: false },
+                { text: "The number of participants in the competition is increasing every year.", correct: true }
+            ],
+            explanation: "(1) Benar: Pada 'Neither... nor...', verb mengikuti subjek terdekat ('the students' = jamak -> 'were'). (2) Salah: 'Everyone' adalah subjek tunggal, harusnya 'has submitted'. (3) Benar: 'The number of...' selalu diikuti kata kerja tunggal ('is')."
+        },
+        {
+            topic: "Passive Voice across Tenses",
+            context: "Analisis ketepatan struktur kalimat pasif pada berbagai tenses berikut:",
+            statements: [
+                { text: "The annual cultural festival is held in our school every August.", correct: true },
+                { text: "The stolen painting was founded by the police last week.", correct: false },
+                { text: "A new science laboratory is being constructed near the library.", correct: true }
+            ],
+            explanation: "(1) Benar: Simple Present Passive (is + V3 'held'). (2) Salah: V3 dari 'find' (menemukan) adalah 'found', sedangkan 'founded' artinya mendirikan. (3) Benar: Present Continuous Passive (is + being + V3)."
+        },
+        {
+            topic: "Used To vs Be Used To",
+            context: "Bedakan kebiasaan di masa lampau ('used to + V1') dengan terbiasa melakukan sesuatu ('be used to + V-ing'):",
+            statements: [
+                { text: "I used to play basketball every afternoon when I was in junior high school.", correct: true },
+                { text: "She is used to wake up early because her school starts at 6:30 AM.", correct: false },
+                { text: "They are used to living in a crowded metropolitan city.", correct: true }
+            ],
+            explanation: "(1) Benar: Kebiasaan lampau yang sudah berhenti menggunakan 'used to + V1'. (2) Salah: Setelah 'is used to' harus Gerund/V-ing ('waking up'). (3) Benar: 'Are used to + V-ing' bermakna sudah terbiasa."
+        },
+        {
+            topic: "Present Perfect with 'Yet', 'Just', 'Ever'",
+            context: "Tentukan kebenaran posisi dan penggunaan adverb dalam Present Perfect berikut:",
+            statements: [
+                { text: "Have you ever been to Raja Ampat?", correct: true },
+                { text: "The train has just departed from platform 3.", correct: true },
+                { text: "They haven't finished their group discussion already.", correct: false }
+            ],
+            explanation: "(1) Benar: 'Ever' digunakan dalam kalimat tanya pengalaman. (2) Benar: 'Just' diletakkan di antara 'has' dan V3. (3) Salah: Untuk kalimat negatif di akhir kalimat digunakan 'yet', bukan 'already'."
+        },
+        {
+            topic: "Reported Speech: Backshift of Tenses",
+            context: "Evaluasi perubahan tenses dari kalimat langsung (Direct) ke tidak langsung (Indirect) dengan reporting verb lampau:",
+            statements: [
+                { text: "Direct: 'I am studying now.' -> Indirect: He said that he was studying then.", correct: true },
+                { text: "Direct: 'We bought a car yesterday.' -> Indirect: They said they had bought a car the day before.", correct: true },
+                { text: "Direct: 'I will help you.' -> Indirect: She promised that she will help me.", correct: false }
+            ],
+            explanation: "(1) Benar: Present Continuous mundur menjadi Past Continuous. (2) Benar: Simple Past mundur menjadi Past Perfect. (3) Salah: Karena reporting verb lampau ('promised'), 'will' harus mundur menjadi 'would'."
+        },
+        {
+            topic: "Narrative Tenses Integration",
+            context: "Perhatikan perpaduan Simple Past, Past Continuous, dan Past Perfect dalam paragraf naratif berikut:",
+            statements: [
+                { text: "When I opened the door, I saw that someone had broken the window.", correct: true },
+                { text: "The sun was shining brightly when the hikers set off early in the morning.", correct: true },
+                { text: "Before the rescue team arrived, the climbers already ran out of food.", correct: false }
+            ],
+            explanation: "(1) Benar: Jendela pecah lebih dulu ('had broken') sebelum pintu dibuka ('opened'). (2) Benar: Latar suasana menggunakan Past Continuous, aksi utama Simple Past. (3) Salah: Kehabisan makanan terjadi sebelum tim penyelamat tiba, seharusnya 'had already run out'."
+        },
+        {
+            topic: "Tag Questions & Tenses",
+            context: "Periksa ketepatan auxiliary verb pada Question Tag sesuai tenses kalimat utamanya:",
+            statements: [
+                { text: "She has never visited Paris before, hasn't she?", correct: false },
+                { text: "You went to the seminar yesterday, didn't you?", correct: true },
+                { text: "They won't cancel the concert due to the rain, will they?", correct: true }
+            ],
+            explanation: "(1) Salah: Kata 'never' membuat pernyataan bermakna negatif, sehingga tag-nya harus positif ('has she?'). (2) Benar: Simple Past positif dipasangkan dengan 'didn't you?'. (3) Benar: Future negatif ('won't') dipasangkan dengan 'will they?'."
+        },
+        {
+            topic: "Past Habit: Would vs Used To",
+            context: "Analisis penggunaan 'would' untuk menyatakan kebiasaan masa lampau:",
+            statements: [
+                { text: "Every summer, our grandfather would tell us stories by the fireplace.", correct: true },
+                { text: "When I was a child, I would have a pet rabbit.", correct: false },
+                { text: "She used to own a vintage bookstore in the city center.", correct: true }
+            ],
+            explanation: "(1) Benar: 'Would' bisa dipakai untuk aksi berulang di masa lalu. (2) Salah: 'Would' tidak bisa dipakai untuk stative verb (kepemilikan 'have') di masa lalu; harus memakai 'used to have'. (3) Benar: 'Used to' bisa untuk dynamic maupun stative verb."
+        },
+        {
+            topic: "Present Simple for Timetables & Schedules",
+            context: "Evaluasi penggunaan Simple Present untuk jadwal tetap di masa depan:",
+            statements: [
+                { text: "The flight to Singapore departs at 07:45 AM tomorrow.", correct: true },
+                { text: "What time does the final examination start next Monday?", correct: true },
+                { text: "Hurry up! The movie is starting at 7 PM according to the schedule.", correct: false }
+            ],
+            explanation: "(1) Benar: Jadwal transportasi tetap menggunakan Simple Present. (2) Benar: Jadwal resmi ujian menggunakan Simple Present. (3) Salah: Jadwal bioskop yang baku seharusnya menggunakan Simple Present ('starts')."
+        },
+        {
+            topic: "Subjunctive 'Wish' & 'If Only' (Tenses Shift)",
+            context: "Periksa ketepatan tenses setelah kata 'wish' untuk menyatakan harapan yang tidak sesuai kenyataan:",
+            statements: [
+                { text: "I wish I knew how to speak Japanese fluently right now.", correct: true },
+                { text: "She wishes she hadn't spent all her savings on that gadget last month.", correct: true },
+                { text: "We wish the weather is sunny today so we could go hiking.", correct: false }
+            ],
+            explanation: "(1) Benar: Harapan masa kini memakai Simple Past ('knew'). (2) Benar: Penyesalan masa lampau memakai Past Perfect ('hadn't spent'). (3) Salah: Harapan masa kini harus mundur ke Simple Past ('were'), bukan 'is'."
+        },
+        {
+            topic: "Comprehensive Tenses Error Analysis",
+            context: "Identifikasi apakah kalimat-kalimat berikut bebas dari kesalahan tata bahasa (grammatically correct):",
+            statements: [
+                { text: "By next month, she will have been teaching at this high school for ten years.", correct: true },
+                { text: "Neither of the answers are correct according to the textbook.", correct: false },
+                { text: "Hardly had the meeting begun when the fire alarm went off.", correct: true }
+            ],
+            explanation: "(1) Benar: Future Perfect Continuous untuk durasi hingga titik masa depan. (2) Salah: 'Neither of...' diikuti verb tunggal ('is'). (3) Benar: Pola inversi Past Perfect ('Hardly had + S + V3 + when + Simple Past')."
+        },
+
+        // --- BAGIAN 2: IF CLAUSE / CONDITIONAL SENTENCES (SOAL 26 - 50) ---
+        {
+            topic: "Conditional Sentence Type 0",
+            context: "Evaluasi kalimat pengandaian Tipe 0 yang menyatakan kebenaran umum atau hukum alam:",
+            statements: [
+                { text: "If you heat ice to above 0 degrees Celsius, it melts.", correct: true },
+                { text: "If plants don't get enough sunlight, they will died.", correct: false },
+                { text: "If you mix red and blue paint, you get purple.", correct: true }
+            ],
+            explanation: "(1) Benar: Pola Type 0 adalah If + Simple Present, Simple Present. (2) Salah: Setelah 'will' harus V1, dan untuk fakta umum Type 0 cukup 'they die'. (3) Benar: Fakta pencampuran warna menggunakan Simple Present di kedua klausa."
+        },
+        {
+            topic: "Conditional Sentence Type 1",
+            context: "Periksa struktur pengandaian Tipe 1 (kemungkinan nyata di masa depan):",
+            statements: [
+                { text: "If it rains tomorrow, we will cancel the outdoor picnic.", correct: true },
+                { text: "She will pass the university entrance exam if she studies hard.", correct: true },
+                { text: "If you will help me with this project, I will treat you to lunch.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola Type 1: If + Simple Present ('rains'), Future ('will cancel'). (2) Benar: Klausa utama di depan tanpa koma, diikuti If + Simple Present. (3) Salah: Klausa 'If' tidak boleh menggunakan 'will' (seharusnya 'If you help me')."
+        },
+        {
+            topic: "Type 1 with Imperatives & Modals",
+            context: "Analisis variasi klausa utama pada Conditional Type 1 (kalimat perintah atau modal selain 'will'):",
+            statements: [
+                { text: "If you see Budi at school, please tell him to call me.", correct: true },
+                { text: "If you finish your homework early, you can watch television.", correct: true },
+                { text: "If anyone calls while I am out, took a message for me.", correct: false }
+            ],
+            explanation: "(1) Benar: Main clause boleh berupa kalimat perintah/imperative ('please tell'). (2) Benar: Main clause boleh memakai modal 'can/may/must'. (3) Salah: Kalimat perintah menggunakan V1 ('take'), bukan V2 ('took')."
+        },
+        {
+            topic: "Conditional Sentence Type 2 (Structure)",
+            context: "Evaluasi struktur pengandaian Tipe 2 (khayalan/tidak nyata di masa sekarang):",
+            statements: [
+                { text: "If I won the lottery, I would travel around the world.", correct: true },
+                { text: "If she were here now, she would know how to solve this problem.", correct: true },
+                { text: "If they had more time, they will join the English club.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola Type 2: If + Simple Past ('won'), would + V1 ('would travel'). (2) Benar: To be untuk semua subjek pada Type 2 formal adalah 'were'. (3) Salah: Klausa utama Type 2 harus memakai 'would', bukan 'will'."
+        },
+        {
+            topic: "Implied Fact of Conditional Type 2",
+            context: "Tentukan apakah makna tersirat (fakta sebenarnya) dari kalimat Conditional Type 2 berikut benar:",
+            statements: [
+                { text: "Sentence: 'If I had a car, I would drive to school.' -> Fact: I don't have a car.", correct: true },
+                { text: "Sentence: 'If he weren't sick, he would attend the class.' -> Fact: He is not sick.", correct: false },
+                { text: "Sentence: 'If we lived closer to the beach, we would swim every day.' -> Fact: We live far from the beach.", correct: true }
+            ],
+            explanation: "(1) Benar: Fakta Type 2 berlawanan dengan pengandaian dalam Simple Present. (2) Salah: 'If he weren't sick' (andaikan dia tidak sakit) berarti faktanya dia sedang sakit ('He is sick'). (3) Benar: Faktanya mereka tinggal jauh dari pantai."
+        },
+        {
+            topic: "Conditional Sentence Type 3 (Structure)",
+            context: "Periksa ketepatan tata bahasa pada pengandaian Tipe 3 (penyesalan/khayalan masa lampau):",
+            statements: [
+                { text: "If you had reminded me earlier, I would have brought the book.", correct: true },
+                { text: "She wouldn't have missed the flight if she had woken up on time.", correct: true },
+                { text: "If they had practiced harder, they would win the championship last year.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola Type 3: If + Past Perfect ('had reminded'), would + have + V3 ('would have brought'). (2) Benar: Klausa utama di depan, diikuti If + Past Perfect. (3) Salah: Main clause Type 3 harus 'would have won', bukan 'would win'."
+        },
+        {
+            topic: "Implied Fact of Conditional Type 3",
+            context: "Analisis fakta masa lampau (Simple Past) dari kalimat Conditional Type 3 berikut:",
+            statements: [
+                { text: "Sentence: 'If I had studied harder, I would have passed the test.' -> Fact: I didn't study hard and I failed.", correct: true },
+                { text: "Sentence: 'If she hadn't taken a taxi, she would have been late.' -> Fact: She took a taxi and arrived on time.", correct: true },
+                { text: "Sentence: 'We would have visited you if we had known you were in town.' -> Fact: We knew you were in town.", correct: false }
+            ],
+            explanation: "(1) Benar: Fakta Type 3 bertolak belakang dalam Simple Past. (2) Benar: Karena dia naik taksi, dia tidak terlambat. (3) Salah: Faktanya mereka tidak tahu ('We didn't know')."
+        },
+        {
+            topic: "Conjunctions: 'Unless' vs 'If'",
+            context: "Evaluasi penggunaan kata hubung 'unless' (kecuali jika / if... not) dalam kalimat pengandaian:",
+            statements: [
+                { text: "You won't pass the exam unless you study seriously.", correct: true },
+                { text: "Unless you don't hurry, we will miss the opening ceremony.", correct: false },
+                { text: "Plants will wither unless they are watered regularly.", correct: true }
+            ],
+            explanation: "(1) Benar: 'Unless you study' = 'If you don't study'. (2) Salah: 'Unless' sudah bermakna negatif, tidak boleh diikuti kalimat negatif ('don't hurry') karena menjadi makna ganda. (3) Benar: Tanaman akan layu kecuali disiram secara teratur."
+        },
+        {
+            topic: "Alternative Conditionals: Provided that, As long as, In case",
+            context: "Periksa ketepatan makna dan penggunaan kata hubung syarat alternatif berikut:",
+            statements: [
+                { text: "You can borrow my laptop as long as you return it before 5 PM.", correct: true },
+                { text: "Take an umbrella with you in case it rains later.", correct: true },
+                { text: "We will go camping tomorrow provided that it will not storm.", correct: false }
+            ],
+            explanation: "(1) Benar: 'As long as' (asalkan) berfungsi seperti 'if' dalam Type 1. (2) Benar: 'In case' (untuk berjaga-jaga jika) diikuti Simple Present. (3) Salah: Setelah 'provided that' tidak memakai 'will', harus Simple Present ('it does not storm')."
+        },
+        {
+            topic: "Inversion in Conditional Type 1 (Should)",
+            context: "Analisis bentuk inversi (tanpa kata 'If') pada Conditional Type 1 menggunakan 'Should':",
+            statements: [
+                { text: "Should you need any further information, please contact our office.", correct: true },
+                { text: "Should he arrives early, ask him to wait in the lounge.", correct: false },
+                { text: "Should it rain tonight, the outdoor concert will be postponed.", correct: true }
+            ],
+            explanation: "(1) Benar: Pola inversi Type 1: Should + Subject + V1 (bare infinitive). (2) Salah: Setelah modal 'Should', kata kerja harus V1 tanpa -s ('arrive', bukan 'arrives'). (3) Benar: Should + it + rain (V1)."
+        },
+        {
+            topic: "Inversion in Conditional Type 2 (Were)",
+            context: "Evaluasi bentuk inversi (tanpa kata 'If') pada Conditional Type 2 menggunakan 'Were':",
+            statements: [
+                { text: "Were I in your position, I would accept the job offer immediately.", correct: true },
+                { text: "Were she to know the truth, she would be deeply disappointed.", correct: true },
+                { text: "Was I rich, I would build a free library for the village.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola inversi Type 2 dengan to be: Were + Subject + complement. (2) Benar: Pola inversi Type 2 dengan kata kerja: Were + Subject + to + V1. (3) Salah: Inversi Type 2 wajib menggunakan 'Were', tidak boleh 'Was'."
+        },
+        {
+            topic: "Inversion in Conditional Type 3 (Had)",
+            context: "Periksa ketepatan struktur inversi (tanpa kata 'If') pada Conditional Type 3 menggunakan 'Had':",
+            statements: [
+                { text: "Had I known about your arrival, I would have picked you up at the station.", correct: true },
+                { text: "Had they not made that crucial mistake, they would have won the match.", correct: true },
+                { text: "Had she studied medicine, she would become a doctor now.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola inversi Type 3: Had + Subject + V3, would have + V3. (2) Benar: Bentuk negatif inversi Type 3: Had + Subject + not + V3. (3) Salah: Untuk Type 3 murni seharusnya 'would have become' (kecuali Mixed Conditional dengan penanda waktu jelas)."
+        },
+        {
+            topic: "Mixed Conditional: Past Condition -> Present Result",
+            context: "Analisis Mixed Conditional (syarat di masa lampau yang berdampak pada kondisi sekarang):",
+            statements: [
+                { text: "If I had taken that scholarship two years ago, I would be studying in London now.", correct: true },
+                { text: "If she hadn't missed the bus this morning, she would be here right now.", correct: true },
+                { text: "If we had bought the house last year, we would have lived there now.", correct: false }
+            ],
+            explanation: "(1) Benar: Klausa If masa lampau (Past Perfect) + hasil sekarang ('would be studying... now'). (2) Benar: Past Perfect + 'would be here right now'. (3) Salah: Karena ada keterangan 'now' (sekarang), hasil seharusnya 'would live / would be living', bukan 'would have lived'."
+        },
+        {
+            topic: "Mixed Conditional: Present Condition -> Past Result",
+            context: "Analisis Mixed Conditional (sifat/kondisi permanen sekarang yang memengaruhi kejadian lampau):",
+            statements: [
+                { text: "If I spoke French fluently, I would have translated that document for you yesterday.", correct: true },
+                { text: "If he weren't so careless, he wouldn't have lost his passport during the trip.", correct: true },
+                { text: "If I am taller, I would have joined the basketball team last semester.", correct: false }
+            ],
+            explanation: "(1) Benar: Kondisi umum sekarang (Simple Past 'spoke') + dampak masa lampau ('would have translated... yesterday'). (2) Benar: Simple Past ('weren't') + Type 3 result ('wouldn't have lost'). (3) Salah: Pengandaian kondisi sekarang harus memakai 'were', bukan 'am'."
+        },
+        {
+            topic: "Modals in Conditional Type 2 & 3 (Could / Might)",
+            context: "Evaluasi penggunaan modal 'could' dan 'might' sebagai pengganti 'would' dalam kalimat pengandaian:",
+            statements: [
+                { text: "If I had enough money, I could buy that laptop today.", correct: true },
+                { text: "If you had asked for help, we might have finished the work faster.", correct: true },
+                { text: "If she practiced more, she could have played the piano well now.", correct: false }
+            ],
+            explanation: "(1) Benar: 'Could + V1' pada Type 2 bermakna 'akan mampu/bisa'. (2) Benar: 'Might + have + V3' pada Type 3 bermakna 'mungkin saja sudah'. (3) Salah: Klausa If Type 2 ('practiced') dengan keterangan 'now' harus memakai 'could play', bukan 'could have played'."
+        },
+        {
+            topic: "Prepositional Conditionals: 'Without' & 'But for'",
+            context: "Periksa penggunaan frasa 'Without' dan 'But for' (seandainya bukan karena) yang menggantikan klausa If:",
+            statements: [
+                { text: "But for your timely help, I wouldn't have survived the crisis.", correct: true },
+                { text: "Without clean water, all living organisms would die.", correct: true },
+                { text: "But for he helped me, I would have failed the project.", correct: false }
+            ],
+            explanation: "(1) Benar: 'But for + Noun Phrase' (= If it hadn't been for your timely help). (2) Benar: 'Without + Noun Phrase' (= If there weren't clean water). (3) Salah: 'But for' adalah preposisi, harus diikuti kata benda (noun), bukan klausa ('he helped me')."
+        },
+        {
+            topic: "Implied Conditionals with 'Otherwise'",
+            context: "Evaluasi penggunaan kata 'otherwise' (jika tidak) untuk menyiratkan konsekuensi pengandaian:",
+            statements: [
+                { text: "We must leave now; otherwise, we will miss the last train.", correct: true },
+                { text: "He wore a thick jacket; otherwise, he would have caught a cold.", correct: true },
+                { text: "Study hard for the exam; otherwise, you would passed it.", correct: false }
+            ],
+            explanation: "(1) Benar: Konteks masa kini/depan -> 'otherwise + will + V1'. (2) Benar: Konteks lampau ('wore') -> 'otherwise + would have + V3'. (3) Salah: Konteks perintah sekarang seharusnya 'otherwise, you will fail it'."
+        },
+        {
+            topic: "Punctuation in Conditional Sentences",
+            context: "Periksa ketepatan tanda baca koma (,) pada susunan klausa kalimat pengandaian berikut:",
+            statements: [
+                { text: "If you heat water to 100°C, it boils.", correct: true },
+                { text: "It boils, if you heat water to 100°C.", correct: false },
+                { text: "Had we arrived earlier, we would have gotten the front-row seats.", correct: true }
+            ],
+            explanation: "(1) Benar: Jika 'If-clause' di awal kalimat, wajib diberi tanda koma sebelum main clause. (2) Salah: Jika 'Main clause' di depan, tidak perlu tanda koma sebelum 'if'. (3) Benar: Klausa syarat inversi di awal kalimat dipisahkan koma."
+        },
+        {
+            topic: "If Only vs I Wish in Conditionals",
+            context: "Analisis penggunaan 'If only' untuk mengekspresikan pengandaian atau penyesalan yang kuat:",
+            statements: [
+                { text: "If only I had listened to my parents' advice!", correct: true },
+                { text: "If only it would stop raining so we could go outside!", correct: true },
+                { text: "If only she knows how much we miss her!", correct: false }
+            ],
+            explanation: "(1) Benar: Penyesalan masa lampau menggunakan Past Perfect ('had listened'). (2) Benar: Harapan perubahan situasi menggunakan 'would + V1'. (3) Salah: Harapan masa kini harus menggunakan Simple Past ('knew'), bukan 'knows'."
+        },
+        {
+            topic: "Polite Requests with Conditional Forms",
+            context: "Tentukan ketepatan kalimat pengandaian yang berfungsi sebagai permintaan sopan (polite request):",
+            statements: [
+                { text: "I would be very grateful if you could send me the brochure.", correct: true },
+                { text: "If you would sign this document here, we can process your application.", correct: true },
+                { text: "I will appreciate it if you would sent the file yesterday.", correct: false }
+            ],
+            explanation: "(1) Benar: Pola sopan standar ('I would be grateful if you could + V1'). (2) Benar: 'If you would + V1' dipakai khusus untuk permintaan sopan yang meminta kesediaan lawan bicara. (3) Salah: 'Would' tidak bisa diikuti V2 ('sent') maupun 'yesterday'."
+        },
+        {
+            topic: "Supposing / Suppose / Imagine in Conditionals",
+            context: "Evaluasi penggunaan kata pembuka pengandaian 'Suppose' atau 'Imagine' sebagai pengganti 'If':",
+            statements: [
+                { text: "Suppose you lost your passport abroad, what would you do?", correct: true },
+                { text: "Imagine you had been born in the 19th century; how different would life have been?", correct: true },
+                { text: "Supposing it rains tomorrow, what would you did?", correct: false }
+            ],
+            explanation: "(1) Benar: Pengandaian Type 2 ('lost' -> 'would you do'). (2) Benar: Pengandaian Type 3 ('had been born' -> 'would life have been'). (3) Salah: Setelah 'would' harus V1 ('do'), dan jika memakai 'rains' (Type 1) seharusnya 'what will you do?'."
+        },
+        {
+            topic: "Choosing the Right Conditional Type by Context",
+            context: "Sesuaikan tipe pengandaian dengan konteks situasi nyata yang diberikan:",
+            statements: [
+                { text: "Context: Exam is tomorrow. -> 'If I pass tomorrow's exam, I will celebrate with my friends.'", correct: true },
+                { text: "Context: Exam was yesterday and I failed. -> 'If I pass yesterday's exam, I would celebrate.'", correct: false },
+                { text: "Context: I cannot fly like a bird. -> 'If I were a bird, I would fly across the ocean.'", correct: true }
+            ],
+            explanation: "(1) Benar: Kejadian besok (masih mungkin terjadi) menggunakan Type 1. (2) Salah: Ujian sudah lewat kemarin (masa lampau) wajib menggunakan Type 3 ('If I had passed... I would have celebrated'). (3) Benar: Khayalan mustahil masa kini menggunakan Type 2."
+        },
+        {
+            topic: "Even If vs Even Though",
+            context: "Bedakan makna pengandaian ekstrem ('Even if' = sekalipun) dengan fakta kontras ('Even though' = meskipun):",
+            statements: [
+                { text: "Even if it rains tomorrow, we will still hold the charity run.", correct: true },
+                { text: "Even if I had a million dollars, I wouldn't buy that overpriced car.", correct: true },
+                { text: "Even if he was tired yesterday, he finished all his homework.", correct: false }
+            ],
+            explanation: "(1) Benar: 'Even if' untuk situasi masa depan yang belum pasti. (2) Benar: 'Even if' untuk pengandaian Type 2. (3) Salah: Karena dia memang benar-benar lelah kemarin (fakta nyata), harus menggunakan 'Even though', bukan 'Even if'."
+        },
+        {
+            topic: "Conditional Sentences in Formal Scientific Writing",
+            context: "Evaluasi penggunaan kalimat pengandaian dalam konteks teks ilmiah/akademik SMA:",
+            statements: [
+                { text: "If greenhouse gas emissions continue to rise, global temperatures will increase.", correct: true },
+                { text: "Had the experiment been conducted at a lower temperature, the reaction would have been slower.", correct: true },
+                { text: "If the sample was heated to 500°C yesterday, it would decompose completely.", correct: false }
+            ],
+            explanation: "(1) Benar: Prediksi ilmiah berbasis sebab-akibat menggunakan Type 1. (2) Benar: Analisis eksperimen lampau menggunakan inversi Type 3. (3) Salah: Kejadian lampau ('yesterday') harus menggunakan Type 3 ('If the sample had been heated... it would have decomposed')."
+        },
+        {
+            topic: "Final Review: Integrated Tenses & If Clause",
+            context: "Tentukan ketepatan gramatikal keseluruhan dari tiga kalimat kompleks berikut:",
+            statements: [
+                { text: "By the time she finishes her degree next year, she will have been studying abroad for four years.", correct: true },
+                { text: "Were the government to invest more in renewable energy, carbon emissions would decrease significantly.", correct: true },
+                { text: "If I didn't stay up late last night, I wouldn't feel so sleepy during the class right now.", correct: false }
+            ],
+            explanation: "(1) Benar: Time clause Simple Present + Future Perfect Continuous. (2) Benar: Inversi Conditional Type 2 formal ('Were + S + to + V1'). (3) Salah: Begadang terjadi 'last night' (lampau), sehingga klausa If harus Past Perfect ('If I hadn't stayed up late last night') dalam pola Mixed Conditional."
+        }
+    ];
+
+    // =========================================================================
+    // RENDER SOAL PG KOMPLEKS KE HALAMAN
+    // =========================================================================
+    const container = document.getElementById('questions-container');
+
+    questions.forEach((q, qIdx) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.id = `card-${qIdx}`;
+
+        let rowsHTML = q.statements.map((st, sIdx) => `
+            <tr id="row-${qIdx}-${sIdx}">
+                <td><strong>(${sIdx + 1})</strong> ${st.text}</td>
+                <td class="center">
+                    <input type="radio" class="radio-btn" name="q_${qIdx}_s_${sIdx}" value="true" onchange="updateProgress()">
+                </td>
+                <td class="center">
+                    <input type="radio" class="radio-btn" name="q_${qIdx}_s_${sIdx}" value="false" onchange="updateProgress()">
+                </td>
+            </tr>
+        `).join('');
+
+        card.innerHTML = `
+            <div class="q-header">
+                <span class="q-num">Soal ${qIdx + 1}</span>
+                <span class="q-topic">${q.topic}</span>
+            </div>
+            <div class="q-context">${q.context}</div>
+            <table class="complex-table">
+                <thead>
+                    <tr>
+                        <th>Pernyataan</th>
+                        <th style="text-align:center;">Benar</th>
+                        <th style="text-align:center;">Salah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHTML}
+                </tbody>
+            </table>
+            <div class="explanation" id="exp-${qIdx}"></div>
+        `;
+        container.appendChild(card);
+    });
+
+    // Update progres soal yang sudah terisi lengkap (3 pernyataan per soal)
+    function updateProgress() {
+        let completedQuestions = 0;
+        questions.forEach((q, qIdx) => {
+            let answeredStatements = 0;
+            q.statements.forEach((_, sIdx) => {
+                if (document.querySelector(`input[name="q_${qIdx}_s_${sIdx}"]:checked`)) {
+                    answeredStatements++;
+                }
+            });
+            if (answeredStatements === q.statements.length) completedQuestions++;
+        });
+        document.getElementById('completed-q').textContent = completedQuestions;
+    }
+
+    // Timer ujian
+    let seconds = 0;
+    const timerInterval = setInterval(() => {
+        seconds++;
+        const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        document.getElementById('timer').textContent = `Waktu: ${mins}:${secs}`;
+    }, 1000);
+
+    // Proses Submit & Penilaian PG Kompleks
+    document.getElementById('quiz-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const studentName = document.getElementById('studentName').value.trim();
+        const studentClass = document.getElementById('studentClass').value.trim();
+
+        if (!studentName || !studentClass) {
+            alert("Harap isi Nama Lengkap dan Kelas terlebih dahulu di bagian atas!");
+            document.getElementById('identity-card').scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+
+        // Cek kelengkapan jawaban
+        let incompleteQ = [];
+        questions.forEach((q, qIdx) => {
+            let count = 0;
+            q.statements.forEach((_, sIdx) => {
+                if (document.querySelector(`input[name="q_${qIdx}_s_${sIdx}"]:checked`)) count++;
+            });
+            if (count < q.statements.length) incompleteQ.push(qIdx + 1);
+        });
+
+        if (incompleteQ.length > 0) {
+            const proceed = confirm(`Masih ada ${incompleteQ.length} nomor yang belum lengkap dijawab (Nomor: ${incompleteQ.slice(0, 10).join(', ')}${incompleteQ.length > 10 ? '...' : ''}). Tetap kirim jawaban?`);
+            if (!proceed) return;
+        }
+
+        clearInterval(timerInterval);
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Menghitung Skor & Mengirim ke Email Guru...";
+
+        let totalStatements = 0;
+        let correctStatements = 0;
+        let perfectQuestions = 0;
+        let reportSummary = [];
+
+        questions.forEach((q, qIdx) => {
+            let qCorrectCount = 0;
+            let stDetails = [];
+
+            q.statements.forEach((st, sIdx) => {
+                totalStatements++;
+                const radios = document.querySelectorAll(`input[name="q_${qIdx}_s_${sIdx}"]`);
+                radios.forEach(r => r.disabled = true);
+
+                const selected = document.querySelector(`input[name="q_${qIdx}_s_${sIdx}"]:checked`);
+                const row = document.getElementById(`row-${qIdx}-${sIdx}`);
+
+                if (selected) {
+                    const userVal = selected.value === "true";
+                    if (userVal === st.correct) {
+                        correctStatements++;
+                        qCorrectCount++;
+                        row.style.backgroundColor = "#dcfce7";
+                        stDetails.push(`P${sIdx+1}:OK`);
+                    } else {
+                        row.style.backgroundColor = "#fee2e2";
+                        stDetails.push(`P${sIdx+1}:X`);
+                    }
+                } else {
+                    row.style.backgroundColor = "#fef3c7";
+                    stDetails.push(`P${sIdx+1}:-`);
+                }
+            });
+
+            const expDiv = document.getElementById(`exp-${qIdx}`);
+            if (qCorrectCount === q.statements.length) {
+                perfectQuestions++;
+                expDiv.className = 'explanation correct';
+                expDiv.innerHTML = `✅ <strong>Sempurna (3/3 Benar)!</strong><br>${q.explanation}`;
+            } else if (qCorrectCount > 0) {
+                expDiv.className = 'explanation partial';
+                expDiv.innerHTML = `⚠️ <strong>Benar Sebagian (${qCorrectCount}/3)</strong><br>${q.explanation}`;
+            } else {
+                expDiv.className = 'explanation wrong';
+                expDiv.innerHTML = `❌ <strong>Belum Tepat (0/3)</strong><br>${q.explanation}`;
+            }
+            expDiv.style.display = 'block';
+
+            reportSummary.push(`No.${qIdx+1}[${stDetails.join(',')}]`);
+        });
+
+        // Skor dihitung proporsional dari 150 pernyataan (skala 0 - 100)
+        const finalScore = Math.round((correctStatements / totalStatements) * 100);
+        const timeSpent = document.getElementById('timer').textContent.replace('Waktu: ', '');
+
+        // Tampilkan hasil di layar
+        const resultBox = document.getElementById('result-box');
+        document.getElementById('final-score').textContent = finalScore;
+        document.getElementById('score-detail').textContent = `${studentName} (${studentClass}) • Poin Pernyataan: ${correctStatements}/${totalStatements} • Soal Sempurna: ${perfectQuestions}/50 • Durasi: ${timeSpent}`;
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+
+        // Kirim hasil ke email guru via Formspree
+        const statusDiv = document.getElementById('email-status');
+        if (FORMSPREE_ENDPOINT === "GANTI_DENGAN_URL_FORMSPREE_ANDA" || !FORMSPREE_ENDPOINT.startsWith("http")) {
+            statusDiv.style.background = "#fef3c7";
+            statusDiv.style.color = "#92400e";
+            statusDiv.textContent = `⚠️ Nilai tampil di layar, tetapi pengiriman otomatis ke ${TEACHER_EMAIL} belum aktif karena URL Formspree belum dimasukkan pada kode.`;
+            submitBtn.style.display = 'none';
+            return;
+        }
+
+        try {
+            const response = await fetch(FORMSPREE_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `Hasil Asesmen PG Kompleks (If Clause & Tenses) - ${studentName} (${studentClass})`,
+                    Email_Guru_Tujuan: TEACHER_EMAIL,
+                    Nama_Siswa: studentName,
+                    Kelas: studentClass,
+                    Skor_Akhir: finalScore,
+                    Pernyataan_Benar: `${correctStatements} dari ${totalStatements}`,
+                    Soal_Sempurna_3_dari_3: `${perfectQuestions} dari 50 soal`,
+                    Durasi_Pengerjaan: timeSpent,
+                    Rincian_Per_Nomor: reportSummary.join(" | ")
+                })
+            });
+
+            if (response.ok) {
+                statusDiv.style.background = "#dcfce7";
+                statusDiv.style.color = "#14532d";
+                statusDiv.textContent = `✅ Hasil asesmen berhasil dikirim ke email guru (${TEACHER_EMAIL})!`;
+            } else {
+                throw new Error("Server menolak permintaan");
+            }
+        } catch (err) {
+            statusDiv.style.background = "#fee2e2";
+            statusDiv.style.color = "#7f1d1d";
+            statusDiv.textContent = `❌ Pengiriman otomatis ke ${TEACHER_EMAIL} gagal. Siswa harap screenshot layar skor ini untuk dikirim ke guru.`;
+        }
+
+        submitBtn.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
